@@ -13,6 +13,7 @@ cmd('autocmd ColorScheme * highlight ExtraWhitespace ctermbg=red guibg=grey') --
 set.guifont		      = 'Droid Sans Mono Nerd 12'
 set.termguicolors   = true      -- Enable GUI colors for the terminal to get truecolor
 set.list            = false      -- show whitespace
+set.syntax = 'on'
 set.listchars = {
          nbsp       = '⦸',      -- CIRCLED REVERSE SOLIDUS (U+29B8, UTF-8: E2 A6 B8)
          extends    = '»',      -- RIGHT-POINTING DOUBLE ANGLE QUOTATION MARK (U+00BB, UTF-8: C2 BB)
@@ -52,12 +53,12 @@ set.shiftround      = true
 set.splitbelow      = true      -- open horizontal splits below current window
 set.splitright      = true      -- open vertical splits to the right of the current window
 set.laststatus      = 2         -- always show status line
---set.colorcolumn = "79"        -- vertical word limit line
+-- set.colorcolumn = "79"        -- vertical word limit line
 
 
 set.hidden          = true      -- allows you to hide buffers with unsaved changes without being prompted
 set.inccommand      = 'split'   -- live preview of :s results
-set.shell           = 'zsh'     -- shell to use for `!`, `:!`, `system()` etc.
+set.shell           = 'bash'     -- shell to use for `!`, `:!`, `system()` etc.
 -- highlight on yank
 exec([[
   augroup YankHighlight
@@ -90,9 +91,13 @@ cmd([[ autocmd FileType xml,html,xhtml,css,scssjavascript,lua,dart setlocal shif
 -- json
 cmd([[ au BufEnter *.json set ai expandtab shiftwidth=2 tabstop=2 sta fo=croql ]])
 
-
 require('lualine').setup {
 }
+-- Lua
+require('onedark').setup {
+    style = 'darker'
+}
+require('onedark').load()
 
 
 --If you want to automatically ensure that packer.nvim is installed on any machine you clone your configuration to,
@@ -160,8 +165,27 @@ use {
   requires = { 'kyazdani42/nvim-web-devicons', opt = true }
 }
 use 'kyazdani42/nvim-web-devicons'
-
+-- Using Packer
+use 'navarasu/onedark.nvim'
 use 'marko-cerovac/material.nvim'
+use {
+  'nvim-telescope/telescope.nvim',
+  requires = { {'nvim-lua/plenary.nvim'} }
+}
+use 'nvim-lua/plenary.nvim'
+use 'p00f/nvim-ts-rainbow'
+-- Lua
+use {
+  "folke/todo-comments.nvim",
+  requires = "nvim-lua/plenary.nvim",
+  config = function()
+    require("todo-comments").setup {
+      -- your configuration comes here
+      -- or leave it empty to use the default settings
+      -- refer to the configuration section below
+    }
+  end
+}
 end, config = {
   -- Move to lua dir so impatient.nvim can cache it
   compile_path = vim.fn.stdpath('config')..'/plugin/packer_compiled.lua'
